@@ -492,7 +492,7 @@
               return 0
             }
             let sortTasks = selectedlist.sort(compare)
-            for(i=0; this.tasks.length>0 ;i++){
+            for(i=0; this.tasks.length>i ;i++){
               sortTasks.push(this.tasks[i])
             }
             this.tasks = [...new Set(sortTasks)];
@@ -509,7 +509,7 @@
                 return 0
               }           
               let sortTasks = selectedlist.sort(compare)
-                for(i=0; this.tasks.length>0 ;i++){
+                for(i=0; this.tasks.length>i ;i++){
                 sortTasks.push(this.tasks[i])
               }
               this.tasks = [...new Set(sortTasks)];     
@@ -526,7 +526,7 @@
                 return 0
               }            
             let sortTasks = selectedlist.sort(compare)
-                for(i=0; this.tasks.length>0 ;i++){
+                for(i=0; this.tasks.length>i ;i++){
                 sortTasks.push(this.tasks[i])
             }
             this.tasks = [...new Set(sortTasks)]; 
