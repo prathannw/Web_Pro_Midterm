@@ -674,7 +674,7 @@
             /*function findlist(val){
               return val.id == id
             }*/
-            let selectedlist = this.todolist.filter(todoval => todoval.id == id)[0]
+            let selectedlist = this.todolist.filter(todoval => todoval.listid == id)[0]
             selectedlist.listname = this.editNamelist
             this.modalEditList = false
           },
