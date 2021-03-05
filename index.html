@@ -672,7 +672,7 @@
           savelist(){
             let id = this.editlistId
             function findlist(val){
-              return val.id == id
+              return val.listid == id
             }
             let selectedlist = this.todolist.filter(findlist)[0]
             selectedlist.listname = this.editNamelist
