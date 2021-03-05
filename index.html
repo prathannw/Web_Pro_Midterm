@@ -664,7 +664,7 @@
             /*function findlist(val){
               return val.listid == id
             }*/
-            let selectedlist = this.todolist.filter(todoval => todoval.listid == id)[0]
+            let selectedlist = this.todolist.filter(todoval => todoval.listid == id)
             // console.log('dd', selectedlist)
             this.editNamelist = selectedlist.listname
             this.editlistId= selectedTask.listid
@@ -675,7 +675,7 @@
             /*function findlist(val){
               return val.id == id
             }*/
-            let selectedlist = this.todolist.filter(todoval => todoval.id == id)[0]
+            let selectedlist = this.todolist.filter(todoval => todoval.id == id)
             selectedlist.listname = this.editNamelist
             this.modalEditList = false
           },
