@@ -671,10 +671,10 @@
           // Save Name List
           savelist(){
             let id = this.editlistId
-            /*function findlist(val){
+            function findlist(val){
               return val.id == id
-            }*/
-            let selectedlist = this.todolist.filter(todoval => todoval.listid == id)[0]
+            }
+            let selectedlist = this.todolist.filter(findlist)[0]
             selectedlist.listname = this.editNamelist
             this.modalEditList = false
           },
