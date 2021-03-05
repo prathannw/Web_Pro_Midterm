@@ -8,7 +8,7 @@
     <link href="/css/bulma.css" rel="stylesheet" />
     <script src="/js/all.js"></script>
     <script src="/js/vue.js"></script>
-    <title>My ToDo List</title>
+    <title>My Todos List</title>
     <style>
       .flags{
         width: 3%; 
@@ -16,22 +16,25 @@
       .plus{
         width: 25px;
       }
+      body{
+        background-color : blanchedalmond
+      }
     </style>
   </head>
   <body>
-    <section id="app" style='background-color : blanchedalmond'>
+    <section id="app">
       <div class="container">
         <div class="hero-body">
-          <p class="title">My ToDo List <span @click='modalNewList = true'><img class='plus' src = "plus.png"/></span></p>
+          <p class="title">My To Do List<span @click='modalNewList = true'><img class='plus' src = "plus.png"/></span></p>
           <p class="subtitle" style="font-style:italic;"><b>Completed: <span style="color: red;">{{completeTask}}</span> Incomplete: <span style="color: red;">{{inCompleteTask}}</span> </br>Flagged: <span style="color: red;">{{statusFlag}}</span></b> </p>
         
-          <!---------------- Header ------------------->
+        <!---------------- Header ------------------->
         <template v-for="todo in todolist">
           <div class="columns">
 
             <!-- contents -->
             <div class="column is-8">
-                <h1 style="font-style:unset; font-size: 20px;"> <b>{{todo.listname}}</b> <span class="icon is-small ml-3" @click="editlist(todo.listid)">
+                <h1 style="font-style:initial; font-size: 20px;"> <b>{{todo.listname}}</b> <span class="icon is-small ml-3" @click="editlist(todo.listid)">
                   <i class="fas fa-edit"></i>
                 </span><span class="icon is-small ml-2"  @click="deletelist(todo.listid)">
                   <i class="fas fa-trash-alt"></i> </span>
@@ -49,7 +52,7 @@
                             </label>
                           </div>
                           <div class="level-right">
-                            <span class="icon is-small" @click="editTask(task.id)">
+                            <span class="icon is-small" @click="editTask(task.id, task.color)">
                               <i class="fas fa-edit"></i>
                             </span>
                             <span class="icon is-small ml-5"  @click="deleteTask(task.id)">
@@ -103,7 +106,7 @@
                     <div class="content">
                       <div class="control">
                         <input type="radio" v-model='todo.sort' value="sort_1" @click="sortTaskByName(todo.listid), todoid = todo.listid"/> <b>Sort alphabetically</b><br><br>
-                        <input type="radio" v-model='todo.sort' value="sort_2" @click="todoid = todo.listid, sortTaskByIncomplete(todo.listid)"/> <b>Sort incomplete tasks</b><br><br>
+                        <input type="radio" v-model='todo.sort' value="sort_2" @click="sortTaskByIncomplete(todo.listid), todoid = todo.listid"/> <b>Sort incomplete tasks</b><br><br>
                         <input type="radio" v-model='todo.sort' value="sort_3" @click="sortTaskByFlag(todo.listid), todoid = todo.listid"/> <b>Sort flagged task first</b><br><br>
                         <input type="radio" v-model='todo.sort' value="sort_4" @click="sortTaskByDate(todo.listid), todoid = todo.listid"/> <b>Sort by due date (ascending)</b>
                       </div>
@@ -130,10 +133,10 @@
               </div>
               <div class="column">
                 <p class="control mx-6">
-                <div class="dropdown" v-bind:class="{'is-active' : isActive}">
+                <div class="dropdown" v-bind:class="{'is-active' : isActive1}">
                   <div class="dropdown-trigger">
-                      <button class="button" aria-haspopup="true" aria-controls="dropdown-menu" v-on:click="isActive = !isActive">
-                        <span>{{state}}</span>
+                      <button class="button" aria-haspopup="true" aria-controls="dropdown-menu" v-on:click="isActive1 = !isActive1">
+                        <span>{{stateDropdown1}}</span>
                           <span class="icon is-small">
                               <i class="fas fa-angle-down" aria-hidden="true"></i>
                           </span>
@@ -142,8 +145,8 @@
                   <div class="dropdown-menu" id="dropdown-menu" role="menu">
                       <div class="dropdown-content" style="width: 100px;">
                         
-                          <a v-for="listName in todolist" class="dropdown-item" @click='state = listName.listname , listStateId = listName.listid, isActive = !isActive'>
-                            {{ listName.listname }}
+                          <a v-for="todo in todolist" class="dropdown-item" @click='stateDropdown1 = todo.listname , listStateId1 = todo.listid, isActive1 = !isActive1'>
+                            {{ todo.listname }}
                           </a>
                         
                         </div>
@@ -164,27 +167,27 @@
               
               <!-- Button color Check -->
               <div class="column" @click="taskcolor.color_black = !taskcolor.color_black , taskcolor.color_red = false , taskcolor.color_green = false , checkColor = 'black'">
-                <p class="control my-1" v-if='taskcolor.color_black' key="true" value= 'black'>
-                  <i class="fa fa-check-circle" style="font-size:24px;color:black"></i>
+                <p class="control my-1" v-if='taskcolor.color_black' key="false" v-model='taskcolor.color_black'>
+                  <i class="fas fa-check-circle" style="font-size:24px;color:black"></i>
                 </p>
-                <p class="control my-1" v-else key="false">
-                  <i class="fa fa-circle" style="font-size:24px;color:black"></i>
+                <p class="control my-1" v-else key="true">
+                  <i class="fas fa-circle" style="font-size:24px;color:black"></i>
                 </p>
               </div>
               <div class="column" @click="taskcolor.color_green = !taskcolor.color_green , taskcolor.color_red = false , taskcolor.color_black = false , checkColor = 'green'">
-                <p class="control my-1" v-if='taskcolor.color_green' key="true" value= 'green'>
-                  <i class="fa fa-check-circle" style="font-size:24px;color:green"></i>
+                <p class="control my-1" v-if='taskcolor.color_green' key="false" v-model='taskcolor.color_green'>
+                  <i class="fas fa-check-circle" style="font-size:24px;color:green"></i>
                 </p>
-                <p class="control my-1" v-else key="false">
-                  <i class="fa fa-circle" style="font-size:24px;color:green"></i>
+                <p class="control my-1" v-else key="true">
+                  <i class="fas fa-circle" style="font-size:24px;color:green"></i>
                 </p>
               </div>
               <div class="column" @click="taskcolor.color_red = !taskcolor.color_red , taskcolor.color_black = false , taskcolor.color_green = false , checkColor = 'red'">
-                <p class="control my-1" v-if='taskcolor.color_red' key="true" value= 'red'>
-                  <i class="fa fa-check-circle" style="font-size:24px;color:red" ></i>
+                <p class="control my-1" v-if='taskcolor.color_red' key="false" v-model='taskcolor.color_red'>
+                  <i class="fas fa-check-circle" style="font-size:24px;color:red" ></i>
                 </p>
-                <p class="control my-1" v-else key="false">
-                  <i class="fa fa-circle" style="font-size:24px;color:red"></i>
+                <p class="control my-1" v-else key="true">
+                  <i class="fas fa-circle" style="font-size:24px;color:red"></i>
                 </p>
               </div>
               <!-- Button color Check -->
@@ -217,10 +220,10 @@
 
             <div class="column is-3">
               <p class="control mx-6">
-              <div class="dropdown" v-bind:class="{'is-active' : isActive}">
+              <div class="dropdown" v-bind:class="{'is-active' : isActive2}">
                 <div class="dropdown-trigger">
-                    <button class="button" aria-haspopup="true" aria-controls="dropdown-menu" v-on:click="isActive = !isActive">
-                      <span>{{state}}</span>
+                    <button class="button" aria-haspopup="true" aria-controls="dropdown-menu" v-on:click="isActive2 = !isActive2">
+                      <span>{{stateDropdown2}}</span>
                         <span class="icon is-small">
                             <i class="fas fa-angle-down" aria-hidden="true"></i>
                         </span>
@@ -229,8 +232,8 @@
                 <div class="dropdown-menu" id="dropdown-menu" role="menu">
                     <div class="dropdown-content" style="width: 100px;">
                       
-                        <a v-for="listName in todolist" class="dropdown-item" @click='state = listName.listname , listStateId2 = listName.listid, isActive = !isActive'>
-                          {{ listName.listname }}
+                        <a v-for="todo in todolist" class="dropdown-item" @click='stateDropdown2 = todo.listname , listStateId2 = todo.listid, isActive2 = !isActive2'>
+                          {{ todo.listname }}
                         </a>
                       
                       </div>
@@ -385,7 +388,7 @@
               <div class="column">
                 <p class="control">
                   <span style="padding-left: 75%;"><button class="button" @click="modalDeleteTask = false">Cancel</button></span>
-                  <span><button class="button is-danger" @click="OKdeletelistName">OK</button></span>
+                  <span><button class="button is-danger" @click="OKdeletelist">OK</button></span>
                 </p>
               </div>
             </div>
@@ -407,22 +410,22 @@
             {listid: 1, listname: '--ToDos 01--', HideInComplete: false, ShowOnlyFlagged: false, sort : ''},
           ],
           tasks : [
-            {id: 1, name: 'Item 1' , isComplete : false, DueBy: '', iconFlag: false, color: '', date: 0 ,listID: 1},
-            {id: 2, name: 'Item 2' , isComplete : false, DueBy: '', iconFlag: false, color: '', date: 0 ,listID: 1},
-            {id: 3, name: 'Item 3' , isComplete : false, DueBy: '', iconFlag: false, color: '', date: 0 ,listID: 1},
-            {id: 4, name: 'Item 4' , isComplete : false, DueBy: '', iconFlag: false, color: '', date: 0 ,listID: 1},
-            {id: 5, name: 'Item 5' , isComplete : false, DueBy: '', iconFlag: false, color: '', date: 0 ,listID: 1}
+            {id: 1, name: 'Item 1' , isComplete : false, DueBy: '', iconFlag: false, color: 'black', date: 0 ,listID: 1},
+            {id: 2, name: 'Item 2' , isComplete : false, DueBy: '', iconFlag: false, color: 'black', date: 0 ,listID: 1},
+            {id: 3, name: 'Item 3' , isComplete : false, DueBy: '', iconFlag: false, color: 'black', date: 0 ,listID: 1},
+            {id: 4, name: 'Item 4' , isComplete : false, DueBy: '', iconFlag: false, color: 'black', date: 0 ,listID: 1},
+            {id: 5, name: 'Item 5' , isComplete : false, DueBy: '', iconFlag: false, color: 'black', date: 0 ,listID: 1}
           ],
           color_check : [
-            {color_red: false , color_black: false , color_green: false}
+            {color_red: false , color_black: true , color_green: false}
           ],
           color_check2 : [
-            {color_red: false , color_black: false , color_green: false}
+            {color_red: false , color_black: true , color_green: false}
           ],
           newTasks : '',
           idCounter : 5,
           nameNewList : '',
-          listidCount : 1,
+          listidCount : 0,
           // modal
           modalEditTask : false,
           modalDeleteTask : false,
@@ -446,9 +449,11 @@
           DateCheck : '',
           FlagCheck : '',
           checkColor : 'black',
-          isActive: false,
-          state : '--Select list--',
-          listStateId : null,
+          isActive1: false,
+          isActive2: false,
+          stateDropdown1 : '--Select list--',
+          stateDropdown2 : '--Select list--',
+          listStateId1 : null,
           listStateId2 : null,
           // Change Name List
           editNamelist : '',
@@ -458,6 +463,7 @@
           deletelistid : 0,
           // Check Sort id?
           todoid : 0,
+          sortCheck : '',
           CheckSortIncompleteOk : false,
          },
         methods:{     
@@ -465,97 +471,86 @@
             if(this.newTasks !== '' && (this.color_check[0].color_red === true || this.color_check[0].color_black === true || this.color_check[0].color_green === true) && this.listStateId !== null)
             {
             this.idCounter++
-            this.tasks.push({id: this.idCounter, name: this.newTasks , isComplete : false, DueBy: this.DateCheck, iconFlag: this.FlagCheck, color: this.checkColor , date: parseInt(this.DateCheck.substring(8,10)),listID: this.listStateId})
+            this.tasks.push({id: this.idCounter, name: this.newTasks , isComplete : false, DueBy: this.DateCheck, iconFlag: this.FlagCheck, color: this.checkColor , date: parseInt(this.DateCheck.substring(0,4)+this.DateCheck.substring(5,7)+this.DateCheck.substring(8,10)),listID: this.listStateId1})
             this.newTasks = ''
             this.FlagCheck = false
             this.DateCheck = ''
-            this.listStateId = null
-            this.state = '--Select list--'
+            this.listStateId1 = null
+            this.stateDropdown1 = '--Select list--'
+            this.color_check[0].color_black = true
             this.color_check[0].color_red = false
-            this.color_check[0].color_black = false
             this.color_check[0].color_green = false
             }
             else{alert('โปรดใส่ข้อมูลให้ครบถ้วน')}
           },
           // sort name
           sortTaskByName(todoid){
-            function findTask(val){
+            /*function findTask(val){
               return val.listID == todoid
-            }
-            let selectedlist = this.tasks.filter(findTask)
+            }*/
+            let selectedlist = this.tasks.filter(task => task.listID == todoid)
             function compare(a,b){
               if(a.name < b.name){return -1}
               if(a.name > b.name){return 1}
               return 0
-            }
-            
+            } 
             let sortTasks = selectedlist.sort(compare)
-            for(let i=0 ; this.tasks.length>i ; i++)
-            {
-              sortTasks.push(this.tasks[i])
-              
-            }
             this.tasks = [...new Set(sortTasks)];
           },
           // sort Incomplete
           sortTaskByIncomplete(todoid){           
-              function findTask(val){
+              /*function findTask(val){
                 return val.listID == todoid
-              }
-              let selectedlist = this.tasks.filter(findTask)
+              }*/
+              let selectedlist = this.tasks.filter(task => task.listID == todoid)
               function compare(a,b){
                 if(a.isComplete < b.isComplete){return 1}
                 if(a.isComplete > b.isComplete){return -1}
                 return 0
-              }
-            
+              }            
               let sortTasks = selectedlist.sort(compare)
-              for(let i=0 ; this.tasks.length>i ; i++)
-              {
-                sortTasks.push(this.tasks[i])
-              }
               this.tasks = [...new Set(sortTasks)];     
-   
           },
           // sort Flag
           sortTaskByFlag(todoid){
-            function findTask(val){
+            /*function findTask(val){
               return val.listID == todoid
-            }
-            let selectedlist = this.tasks.filter(findTask)
-            let result = selectedlist.sort(function(a, b) {
-              return b.iconFlag - a.iconFlag
-            })
-            for(let i=0 ; this.tasks.length>i ; i++)
-            {
-              result.push(this.tasks[i])
-            }
-            this.tasks = [...new Set(result)];
+            }*/
+            let selectedlist = this.tasks.filter(task => task.listID == todoid)
+            function compare(a,b){
+                if(a.iconFlag < b.iconFlag){return 1}
+                if(a.iconFlag > b.iconFlag){return -1}
+                return 0
+              }            
+            let sortTasks = selectedlist.sort(compare)
+            this.tasks = [...new Set(sortTasks)]; 
           },
           // sort Date
           sortTaskByDate(todoid){
-            function findTask(val){
+            /*function findTask(val){
               return val.listID == todoid
-            }
-            let selectedlist = this.tasks.filter(findTask)
-            let result = selectedlist.sort(function(a, b) {
-              return b.date - a.date
-            })
+            }*/
+            let selectedlist = this.tasks.filter(task => task.listID == todoid)
+            function compare(a,b){
+                if(a.date < b.date){return 1}
+                if(a.date > b.date){return -1}
+                return 0
+              }            
+            let sortTasks = selectedlist.sort(compare)
             let ReverseCheck = []
-            for(let i=0 ; result.length>i ; i++){
-              if(result[i].date != 0){
-                ReverseCheck.push(result[i])
+            for(let i=0 ; sortTasks.length>i ; i++){
+              if(sortTasks[i].date != 0){
+                ReverseCheck.push(sortTasks[i])
               }
             }
             let resultReverse = ReverseCheck.reverse()
             for(let i=0 ; resultReverse>i ; i++){
-              result.push(resultReverse[i])
+              sortTasks.push(resultReverse[i])
             }
             for(let i=0 ; this.tasks.length>i ; i++)
             {
               resultReverse.push(this.tasks[i])
             }
-            
             this.tasks = [...new Set(resultReverse)];
           },
           // CheckSort
@@ -580,45 +575,61 @@
             }
           },
           // Edit Task
-          editTask(id){
+          editTask(id, color){
             this.modalEditTask = true
-            function findTask(val){
+            /*function findTask(val){
               return val.id == id
+            }*/
+            let selectedTask = this.tasks.filter(task => task.id == id)[0]
+            if(color === 'black'){
+              this.color_check2[0].color_black = true
+              this.color_check2[0].color_red = false 
+              this.color_check2[0].color_green = false 
             }
-            let selectedTask = this.tasks.filter(findTask)[0]
+            else if(color === 'red'){
+              this.color_check2[0].color_black = false
+              this.color_check2[0].color_red = true
+              this.color_check2[0].color_green = false 
+            }
+            else if(color === 'green'){
+              this.color_check2[0].color_black = false
+              this.color_check2[0].color_red = false 
+              this.color_check2[0].color_green = true
+            }
             this.editTaskName = selectedTask.name
             this.editDate = selectedTask.DueBy
             this.editFlag = selectedTask.iconFlag
             this.editTaskid = selectedTask.id
+            this.stateDropdown = '--Select list--'
           },
           // save Edit Task
           saveEditTask(){
             let id = this.editTaskid
-            function findTask(val){
+            /*function findTask(val){
               return val.id == id
-            }
-            let selectedTask = this.tasks.filter(findTask)[0]
-            if(this.editTaskName !== '' && (this.color_check2[0].color_red === true || this.color_check2[0].color_black === true || this.color_check2[0].color_green === true))
+            }*/
+            let selectedTask = this.tasks.filter(task => task.id == id)[0]
+            if(this.editTaskName !== '' && (this.color_check2[0].color_red === true || this.color_check2[0].color_black === true || this.color_check2[0].color_green === true) && this.stateDropdown2 !== '--Select list--')
             {
-            selectedTask.name = this.editTaskName
-            selectedTask.DueBy = this.editDate
-            selectedTask.date =  parseInt(this.editDate.substring(8,10))
-            selectedTask.iconFlag = this.editFlag
-            selectedTask.color = this.editColor
-            this.color_check2[0].color_red = false
-            this.color_check2[0].color_black = false
-            this.color_check2[0].color_green = false
-            this.modalEditTask = false
+              selectedTask.name = this.editTaskName
+              selectedTask.DueBy = this.editDate
+              selectedTask.date = parseInt(this.editDate.substring(0,4)+this.editDate.substring(5,7)+this.editDate.substring(8,10))
+              selectedTask.iconFlag = this.editFlag
+              selectedTask.color = this.editColor
+              selectedTask.listID = this.listStateId2
+              this.stateDropdown2 = '--Select list--'
+              this.editColor = 'black'
+              this.modalEditTask = false
             }
             else{alert('โปรดใส่ข้อมูลของท่านให้ครบถ้วน')}
           },
           // delete Task
           deleteTask(id){
             this.modalDeleteTask = true
-            function findTask(val){
+            /*function findTask(val){
               return val.id == id
-            }
-            let selectedTask = this.tasks.filter(findTask)[0]
+            }*/
+            let selectedTask = this.tasks.filter(task => task.id == id)[0]
             this.deleteTaskName = selectedTask.name
             this.deleteTaskId = selectedTask.id
           },
@@ -635,53 +646,50 @@
           addlist(){           
             if(this.nameNewList !== ''){
             this.listidCount++
-            this.todolist.push({listid : this.listidCount, listname : '--'+this.nameNewList+'--', HideInComplete: false, ShowOnlyFlagged: false,
-            sort : '',})
+            this.todolist.push({listid : this.listidCount, listname : '--'+this.nameNewList+'--', HideInComplete: false, ShowOnlyFlagged: false, sort : '',})
             this.modalNewList = false
             this.nameNewList = ''
             }
             else{alert('กรุณาใส่ชื่อ List ด้วยนะครับ')}
           },
-          // Edit List
+          // Edit Name List
           editlist(id){
             this.modalEditList = true
-            function findlist(val){
+            /*function findlist(val){
               return val.listid == id
-            }
-            let selectedlist = this.todolist.filter(findlist)[0]
+            }*/
+            let selectedlist = this.todolist.filter(todoval => todoval.listid == id)[0]
             // console.log('dd', selectedlist)
             this.editNamelist = selectedlist.listname
             this.editlistId= selectedTask.listid
-            
           },
-          // Save List
+          // Save Name List
           savelist(){
             let id = this.editlistid
-            function findlist(val){
+            /*function findlist(val){
               return val.id == id
-            }
-            let selectedlist = this.todolist.filter(findlist)[0]
+            }*/
+            let selectedlist = this.todolist.filter(todoval => todoval.id == id)[0]
             selectedlist.listname = this.editNamelist
             this.modalEditList = false
-            
           },
           // delete List
           deletelist(id){
             this.modalDeleteList = true
-            function findlist(val){
+            /*function findlist(val){
               return val.listid == id
-            }
-            let selectedlist = this.todolist.filter(findlist)[0]
+            }*/
+            let selectedlist = this.todolist.filter(todoval => todoval.listid == id)[0]
             this.deletelistName = selectedlist.listname
             this.deletelistid = selectedlist.listid
           },
           // ConfirmDeleteList
-          OKdeletelistName(){
+          OKdeletelist(){
             let id = this.deletelistid
-            function findlist(val){
+            /* function findlist(val){
               return val.listid == id
-            }
-            let selectedlist = this.todolist.filter(findlist)[0]
+            }*/
+            let selectedlist = this.todolist.filter(todoval => todoval.listid == id)[0]
             let index = this.todolist.indexOf(selectedlist)
             this.todolist.splice(index, 1)
             let ResetList = this.tasks.filter(task => task.listID !== selectedlist.listid)
