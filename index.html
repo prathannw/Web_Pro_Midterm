@@ -490,8 +490,11 @@
               if(a.name < b.name){return -1}
               if(a.name > b.name){return 1}
               return 0
-            } 
+            }
             let sortTasks = selectedlist.sort(compare)
+            for(i=0; this.tasks.length>0 ;i++){
+              sortTasks.push(this.tasks[i])
+            }
             this.tasks = [...new Set(sortTasks)];
           },
           // sort Incomplete
@@ -504,8 +507,11 @@
                 if(a.isComplete < b.isComplete){return 1}
                 if(a.isComplete > b.isComplete){return -1}
                 return 0
-              }            
+              }           
               let sortTasks = selectedlist.sort(compare)
+                for(i=0; this.tasks.length>0 ;i++){
+                sortTasks.push(this.tasks[i])
+              }
               this.tasks = [...new Set(sortTasks)];     
           },
           // sort Flag
@@ -520,6 +526,9 @@
                 return 0
               }            
             let sortTasks = selectedlist.sort(compare)
+                for(i=0; this.tasks.length>0 ;i++){
+                sortTasks.push(this.tasks[i])
+            }
             this.tasks = [...new Set(sortTasks)]; 
           },
           // sort Date
