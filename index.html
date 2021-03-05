@@ -454,7 +454,7 @@
           listStateId2 : null,
           // Change Name List
           editNamelist : '',
-          editlistId : 0,
+          editlistId : null,
           // Delete List
           deletelistName : '',
           deletelistid : 0,
@@ -664,18 +664,17 @@
             /*function findlist(val){
               return val.listid == id
             }*/
-            let selectedlist = this.todolist.filter(todoval => todoval.listid == id)
-            // console.log('dd', selectedlist)
+            let selectedlist = this.todolist.filter(todoval => todoval.listid == id)[0]
             this.editNamelist = selectedlist.listname
-            this.editlistId= selectedTask.listid
+            this.editlistId = selectedTask.listid
           },
           // Save Name List
           savelist(){
-            let id = this.editlistid
+            let id = this.editlistId
             /*function findlist(val){
               return val.id == id
             }*/
-            let selectedlist = this.todolist.filter(todoval => todoval.id == id)
+            let selectedlist = this.todolist.filter(todoval => todoval.id == id)[0]
             selectedlist.listname = this.editNamelist
             this.modalEditList = false
           },
